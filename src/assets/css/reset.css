@@ -1,0 +1,289 @@
+@charset "utf-8";
+@import "./normalize.css";
+/*通用属性*/
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  /* 解决IOS默认滑动很卡的情况 */
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  /*font: 14px "microsoft yahei", Arial, Helvetica, sans-serif;*/
+  /*font-size: 14px;*/
+  font-family: "Microsoft YaHei","微软雅黑", "Arial", "sans-serif";
+  background-color: #FFFFFF;
+  -webkit-text-size-adjust: 100%;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, ul, li, ol, dl, dt, dd, th, td, img, textarea, input, select, button, pre, form, blockquote, fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+address, cite, code, em, th {
+  font-weight: normal;
+  font-style: normal;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover, a:active, a:focus {
+  /*text-decoration: none;*/
+  /*文本下的一条线*/
+  text-decoration: underline;
+  /*穿过文本下的一条线*/
+  /*text-decoration:line-through;*/
+}
+
+a, input, button {
+  outline: none;
+}
+
+p {
+  /*换行*/
+  /*word-break: break-all;*/
+  /*不换行*/
+  /*word-break: normal;*/
+}
+
+img {
+  border: 0;
+  /*border: none;*/
+  vertical-align: middle;
+}
+
+input, select {
+  vertical-align: middle;
+}
+
+ul, li, ol {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+sup {
+  vertical-align: text-top;
+}
+
+sub {
+  vertical-align: text-bottom;
+}
+
+article, aside, details, figcaption, figure, footer, header, menu, nav, section {
+  display: block;
+}
+
+/*自定义通用class类*/
+/* 图片自适应 */
+img.img-auto {
+  width: 100%;
+  height: auto;
+  width: auto \9; /* ie8 */
+  -ms-interpolation-mode: bicubic; /*为了照顾ie图片缩放失真*/
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+/*  清除浮动方法一*/
+/*.clear{*/
+/*  clear: both;*/
+/*}*/
+/*  清除浮动方法二*/
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  /*font-size: 0;*/
+  content: " ";
+  clear: both;
+  /*height: 0;*/
+}
+
+.clearfix {
+  zoom: 1;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.flex-r {
+  display: flex;
+  flex-direction: row;
+  /*是否换行*/
+  /*flex-wrap:wrap;*/
+}
+
+.flex-c {
+  display: flex;
+  flex-direction: column;
+}
+
+.one-text-cut {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
+
+.text-cut {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.box-sizing {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+/*溢出滚动-兼容ios*/
+.overflow-y-scroll {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+/*溢出隐藏*/
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+/*--------------------*/
+/*
+* max-device-width 与 max-width 区别
+* max-device-width 指的是设备整个渲染（显示）区域的宽度，比如真实的设备屏幕宽度  【例如：手机横竖】大小改变 不执行css
+* max-width 指的是目标显示区域的宽度，比如浏览器的显示区域宽度 根据目标显示区域的宽度 【例如：缩放】大小改变 执行css
+*/
+/*手机适配*/
+/*iPhone5/SE*/
+@media (max-device-width: 320px) {
+  html {
+    font-size: 10px;
+  }
+}
+
+/*iPhone6,7,8*/
+@media (max-device-width: 375px) {
+
+}
+
+/*iPhone6,7,8Plus*/
+@media (max-device-width: 414px) {
+
+}
+
+/*超小屏*/
+@media (max-width: 767px) {
+  html {
+    font-size: 12px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+  body{
+    font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif; /*使用无衬线字体*/
+  }
+
+  /*阻止旋转屏幕时自动调整字体大小*/
+  html, body, form, fieldset, p, div, h1, h2, h3, h4, h5, h6 {
+    -webkit-text-size-adjust: none;
+  }
+
+  /* 取消链接高亮  */
+  body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, dt, dd, a, img, button, form, table, th, tr, td, tbody, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /*移动端点击a链接出现蓝色背景问题解决 */
+  a:link, a:active, a:visited, a:hover {
+    background: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  input[type=search]::-webkit-search-cancel-button,
+  input[type=search]::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+
+  /* 禁止缩放表单 */
+  input[type="submit"], input[type="reset"], input[type="button"], input {
+    resize: none;
+    border: none;
+  }
+}
+
+/*平板  */
+@media (min-width: 768px) and (max-width: 991px) {
+
+}
+
+/*桌面显示器 */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+}
+
+/*大桌面显示器 */
+@media (min-width: 1200px) {
+  html {
+    font-size: 14px
+  }
+}

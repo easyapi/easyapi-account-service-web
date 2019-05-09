@@ -1,0 +1,69 @@
+@import "./colors.styl";
+//自定义样式
+.fz-12
+  font-size 12px
+
+.fz-14
+  font-size 14px
+
+.fz-16
+  font-size 16px
+
+.fz-18
+  font-size 18px
+.fz-cl-blue
+  color cl-blue
+.fz-cl-white
+  color cl-white
+
+.fz-cl-gray
+  color cl-gray
+
+.fz-cl-black
+  color cl-black
+
+.bg-cl-white
+  background-color cl-white
+
+.container
+  height 100%
+
+//公共样式
+//loading加载页
+.loading-container
+  width 100%
+  height 100%
+  justify-content center
+  align-items center
+//登录
+.login-container,.sms-login-container,.register-container
+  background-color cl-white
+  padding 0px 15px
+  .lg-img
+    padding 32px 0 64px 0
+    text-align center
+    img
+      width 64px
+      height 64px
+      vertical-align middle
+  .btn-box
+    padding 0 15px
+    margin-top 30px
+    button
+      width 100%
+      padding 15px 0
+      font-size 16px
+      background-color cl-blue
+      color cl-white
+      border-radius 4px
+  .other
+    padding:15px 10px
+    margin-top 10px
+    text-align center
+    span
+      display inline-block
+      padding 0 15px
+      color cl-blue
+    &>span:nth-child(2)
+      border-left 1px solid cl-blue
+
