@@ -16,7 +16,6 @@
   </div>
 </template>
 <script>
-  import Cookies from 'js-cookie'
   import {changePasswordUrl} from '../api/api'
   import {Toast} from 'vant';
 
@@ -25,7 +24,6 @@
     data() {
       return {
         appKey: '',
-        token: '',
         originalPassword: '',
         newPassword: '',
         confirmPassword: '',
@@ -45,7 +43,6 @@
         } else {
           this.$ajax.post(changePasswordUrl, {
             headers: {
-              Authorization: 'Bearer ' + this.token,
               'Content-Type': 'application/json'
             },
             data: {
@@ -66,7 +63,6 @@
     },
     created() {
       this.appKey = localStorage.getItem("appKey");
-      this.token = Cookies.get('authenticationToken');
     },
     mounted() {
 

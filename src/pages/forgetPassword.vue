@@ -17,9 +17,7 @@
       <div class="btn-box">
         <button @click="submit">提交</button>
       </div>
-
     </div>
-
   </div>
 </template>
 <script>

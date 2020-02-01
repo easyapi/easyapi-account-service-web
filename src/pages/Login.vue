@@ -30,6 +30,8 @@
   </div>
 </template>
 <script>
+
+  import Cookies from 'js-cookie'
   import phoneIcon from '../assets/images/phone_icon.png'
   import pwdIcon from '../assets/images/pwd_icon.png'
   import {passwordLoginUrl, logourl} from '../api/api'
@@ -46,7 +48,6 @@
         accessToken: '',
         phoneIcon: phoneIcon,
         pwdIcon: pwdIcon,
-        authenticationToken: '',
         username: '',
         formData: {
           mobile: null,
@@ -65,12 +66,6 @@
 
     },
     methods: {
-      setCookie(token, exdays) {
-        var exp = new Date();
-        exp.setTime(exp.getTime() + 24 * 60 * 60 * 1000 * exdays);//保存天数
-        window.document.cookie = "authenticationToken" + "=" + token + ";path=/;expires=" + exp.toGMTString();
-        localStorage.setItem("authenticationToken", token);
-      },
       submit() {
         if (!this.formData.mobile || this.formData.mobile.length !== 11) {
           return this.$toast("手机号格式错误")
@@ -84,9 +79,7 @@
 
       //获取Token
       getToKen() {
-        this.$ajax({
-          method: 'post',
-          url: passwordLoginUrl,
+        this.$ajax.post(passwordLoginUrl, {
           data: {
             'appKey': this.appKey,
             username: this.formData.mobile,
@@ -95,10 +88,11 @@
           }
         }).then(res => {
           let arr = res.data.id_token.split(" ")
-          this.setCookie(arr[1], 30)
+          Cookies.set('authenticationToken', arr[1], 30)
+          localStorage.setItem("authenticationToken", token);
           let url = res.data.login_success_url
           localStorage.setItem("LuJin", url);
-          localStorage.setItem("logonName", this.formData.mobile);
+          localStorage.setItem("username", this.formData.mobile);
           window.location.href = 'https://account-service-web.easyapi.com/?appKey=' + this.appKey
         }).catch(error => {
           console.log(error)
@@ -123,7 +117,7 @@
       this.getlogo()
     },
     created() {
-      this.formData.mobile = localStorage.getItem("logonName");
+      this.formData.mobile = localStorage.getItem("username");
       this.LuJin = localStorage.getItem("LuJin");
       if (!this.$route.query.appKey) {
         this.appKey = localStorage.getItem("appKey");

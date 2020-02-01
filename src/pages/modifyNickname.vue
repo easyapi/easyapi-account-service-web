@@ -12,7 +12,6 @@
 </template>
 <script>
   import {userInformationUrl} from '../api/api'
-  import {Field} from 'vant'
   import {Toast} from 'vant';
 
   export default {
@@ -20,24 +19,17 @@
     data() {
       return {
         appKey: '',
-        token: '',
         newNickname: '',
       };
     },
     methods: {
       //获取用户名昵称
       getPersonalData() {
-        this.$ajax({
-          method: 'get',
-          url: userInformationUrl,
-          headers: {
-            Authorization: 'Bearer ' + this.token
-          },
+        this.$ajax.get(userInformationUrl, {
           params: {
             appKey: this.appKey,
           }
         }).then(res => {
-
           this.newNickname = res.data.content.nickname
         }).catch(error => {
           console.log(error)
@@ -45,11 +37,8 @@
       },
       //修改用户昵称
       modify() {
-        this.$ajax({
-          method: 'put',
-          url: userInformationUrl,
+        this.$ajax.put(userInformationUrl, {
           headers: {
-            Authorization: 'Bearer ' + this.token,
             'Content-Type': 'application/json',
           },
           data: {
@@ -57,20 +46,16 @@
             nickname: this.newNickname
           }
         }).then(res => {
-
           Toast.success(res.data.message);
           this.$router.push('/modify')
         }).catch(error => {
           console.log(error)
         });
       },
-
     },
     created() {
       this.appKey = localStorage.getItem("appKey");
-      console.log(this.appKey)
       this.token = localStorage.getItem("authenticationToken");
-      console.log(this.token)
     },
     mounted() {
       this.getPersonalData()

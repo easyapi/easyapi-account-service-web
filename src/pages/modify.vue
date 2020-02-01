@@ -92,7 +92,6 @@
         formData.append("avatarFile", file.file)
         formData.append("avatarFile", file.file)
         // let img= 'https://qiniu.easyapi.com/' + file.file.lastModified;
-        // console.log(img)
         // this.fileHead=img
         //  file.webkitRelativePath = img;
         // this.modifyingHead()
@@ -151,9 +150,7 @@
     },
     created() {
       this.appKey = localStorage.getItem("appKey");
-      console.log(this.appKey)
       this.token = localStorage.getItem("authenticationToken");
-      console.log(this.token)
     },
     mounted() {
       this.getPersonalData()

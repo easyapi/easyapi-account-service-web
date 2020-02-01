@@ -38,9 +38,6 @@
       //个人信息
       getPersonalData() {
         this.$ajax.get(userInformationUrl, {
-          headers: {
-            Authorization: 'Bearer ' + this.token
-          },
           params: {
             appKey: this.appKey,
           }

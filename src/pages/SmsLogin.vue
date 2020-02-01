@@ -77,16 +77,12 @@
         if (!this.formData.mobile || this.formData.mobile.length !== 11) {
           return this.$toast("手机号码格式错误")
         }
-        this.$ajax({
-          method: 'post',
-          url: captchaUrl,
+        this.$ajax.post(captchaUrl, {
           data: {
             'mobile': this.formData.mobile,
             appKey: this.appKey
           },
-//          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then((res) => {
-
           this.$toast("获取成功");
           this.disBtn = true;
           this.showDisabled = false,

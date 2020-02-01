@@ -31,10 +31,7 @@
   </div>
 </template>
 <script>
-  import $ from 'jquery'
-  import {openidUrl, codeUrl, captchaUrl, registerUrl} from '../api/api'
-  import areaList from '../fn/area'
-  import {Toast} from 'vant';
+  import {captchaUrl, registerUrl} from '../api/api'
 
   export default {
     name: '',
@@ -75,10 +72,7 @@
         } else if (!this.formData.code) {
           return this.$toast("请输入验证码")
         } else {
-          console.log(this.formData)
-          this.$ajax({
-            method: 'post',
-            url: registerUrl,
+          this.$ajax.post(registerUrl, {
             data: {
               code: this.formData.code,
               username: this.formData.mobile,
@@ -87,7 +81,6 @@
               appKey: this.appKey
             }
           }).then(res => {
-
             this.$toast("注册成功");
             this.disabled = true;
             setTimeout(() => {
@@ -104,16 +97,12 @@
         if (!this.formData.mobile || this.formData.mobile.length !== 11) {
           return this.$toast("手机号码格式错误")
         }
-        this.$ajax({
-          method: 'post',
-          url: captchaUrl,
+        this.$ajax.post(captchaUrl, {
           data: {
             'mobile': this.formData.mobile,
             appKey: this.appKey
           },
-//          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then((res) => {
-
           this.$toast("获取成功");
           this.disBtn = false;
           this.showDisabled = false;
@@ -135,12 +124,6 @@
           this.disBtn = true;
         }
       },
-      // onBlur(){
-      //   if (this.formData.password!==this.formData.password2){
-      //     this.errorPwdMsg="两次密码输入不一样"
-      //   }else {
-      //     this.errorPwdMsg=""
-      //   }
       jumpPage(url) {
         this.$router.push({path: url,})
       }
@@ -148,13 +131,9 @@
     mounted() {
 //      this.getOpenId();
     },
-    //keep-alive 组件激活时调用
     activated() {
-//			console.log('keep-alive激活')
     },
-    //keep-alive 组件停用时调用。
     deactivated() {
-//      console.log('keep-alive停用')
     },
     created() {
       this.appKey = localStorage.getItem("appKey");

@@ -1,19 +1,10 @@
 import axios from 'axios'
 import router from '../router'
-
-//request header
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+import Cookies from "js-cookie";
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
-  // let token=getCookie('authenticationToken');
-  // let token=localStorage.getItem('authenticationToken');
-  // if(token===null){
-  //   console.log("没有token")
-  // }else {
-  //   config.headers.Authorization="Bearer "+token;
-  // }
-  // config.headers.Authorization="Bearer "+token;
+  config.headers.authorization = "Bearer " + Cookies.get("authenticationToken");
   return config;
 }, function (error) {
   // 对请求错误做些什么

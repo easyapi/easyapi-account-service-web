@@ -2,13 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import axios from './service/fetch'
+import axios from './api/fetch'
 
 Vue.prototype.$ajax = axios
 
-import $ from 'jquery'
 import Vant from 'vant';
-// import 'vant/lib/vant-css/index.css';
 
 import './assets/css/reset.css'
 import './assets/styles/index.styl'
