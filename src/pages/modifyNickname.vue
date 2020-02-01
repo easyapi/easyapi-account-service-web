@@ -37,7 +37,7 @@
             appKey: this.appKey,
           }
         }).then(res => {
-          console.log(res)
+
           this.newNickname = res.data.content.nickname
         }).catch(error => {
           console.log(error)
@@ -57,7 +57,7 @@
             nickname: this.newNickname
           }
         }).then(res => {
-          console.log(res)
+
           Toast.success(res.data.message);
           this.$router.push('/modify')
         }).catch(error => {

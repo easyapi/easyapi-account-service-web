@@ -5,6 +5,9 @@
 </template>
 
 <script>
+
+  import Cookies from 'js-cookie'
+
   export default {
     name: '',
     components: {},
@@ -15,14 +18,12 @@
       }
     },
     created() {
-      console.log(this.$cookies.get('token'))
-      if (!this.$cookies.get('token') || !this.$route.query.appKey) {
+      if (!Cookies.get('token') || !this.$route.query.appKey) {
         sessionStorage.setItem('operType', 1)
         this.$router.push('/login')
       } else {
         this.getUserInfo()
       }
-
     },
     mounted() {
 
@@ -38,7 +39,6 @@
     //方法
     methods: {
       getUserInfo() {
-
       }
     },
     //计算属性

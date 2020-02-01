@@ -23,9 +23,7 @@
   </div>
 </template>
 <script>
-  import $ from 'jquery'
   import {captchaUrl, resetPasswordUrl} from '../api/api'
-  import areaList from '../fn/area'
   import {Toast} from 'vant';
 
   export default {
@@ -44,7 +42,6 @@
       }
     },
 
-    //方法
     methods: {
       submit() {
         if (!this.formData.mobile || this.formData.mobile.length !== 11) {
@@ -58,10 +55,7 @@
         } else if (this.formData.confirmPassword !== this.formData.newPassword) {
           return this.$toast("两次密码输入的不一致，请重新输入")
         } else {
-          console.log(this.formData)
-          this.$ajax({
-            method: 'post',
-            url: resetPasswordUrl,
+          this.$ajax.post(resetPasswordUrl, {
             data: {
               username: this.formData.mobile,
               code: this.formData.code,
@@ -69,13 +63,11 @@
               appKey: this.appKey
             }
           }).then(res => {
-            console.log(res)
             Toast.success(res.data.message);
             setTimeout(() => {
               this.$router.push('/login?appKey=' + this.appKey)
             }, 1200)
           }).catch(error => {
-            console.log(error.response)
             Toast.fail(error.response.data.message);
           });
         }
@@ -86,15 +78,12 @@
         if (!this.formData.mobile || this.formData.mobile.length !== 11) {
           return this.$toast("手机号码格式错误")
         }
-        this.$ajax({
-          method: 'post',
-          url: captchaUrl,
+        this.$ajax.post(captchaUrl, {
           data: {
             'mobile': this.formData.mobile,
             appKey: this.appKey
           },
         }).then((res) => {
-          console.log(res)
           this.$toast("获取成功");
           this.disBtn = false;
           this.countTime();

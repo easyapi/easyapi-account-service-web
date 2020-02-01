@@ -1,15 +1,11 @@
 import axios from 'axios'
 import router from '../router'
-import Vant from 'vant';
-import {getCookie} from '../fn/_fn.js'
 
 //request header
-// axios.defaults.headers.post['encryptDisable'] = true;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
-  console.log(Vant)
   // let token=getCookie('authenticationToken');
   // let token=localStorage.getItem('authenticationToken');
   // if(token===null){

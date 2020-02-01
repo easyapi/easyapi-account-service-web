@@ -39,7 +39,6 @@
     data() {
       return {
         showDisabled: true,
-//        phoneIcon:require('../assets/images/phone_icon.png')
         phoneIcon: phoneIcon,
         pwdIcon: pwdIcon,
         img: '',
@@ -69,7 +68,6 @@
           return this.$toast("请输入验证码")
         }
         this.getToKen()
-        console.log(this.formData)
       },
       //1.获取验证码
       sendSMS() {
@@ -88,7 +86,7 @@
           },
 //          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then((res) => {
-          console.log(res)
+
           this.$toast("获取成功");
           this.disBtn = true;
           this.showDisabled = false,
@@ -112,9 +110,7 @@
       },
       //获取Token
       getToKen() {
-        this.$ajax({
-          method: 'post',
-          url: authenticationCodeLogonUrl,
+        this.$ajax.post(authenticationCodeLogonUrl, {
           data: {
             appKey: this.appKey,
             username: this.formData.mobile,
@@ -122,7 +118,6 @@
             rememberMe: true
           }
         }).then(res => {
-          console.log(res)
           let arr = res.data.id_token.split(" ")
           this.setCookie(arr[1], 30)
           let url = res.data.login_success_url

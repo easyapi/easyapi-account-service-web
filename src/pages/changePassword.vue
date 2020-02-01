@@ -16,10 +16,9 @@
   </div>
 </template>
 <script>
-  import {getCookie} from '../util/getCookie'
+  import Cookies from 'js-cookie'
   import {changePasswordUrl} from '../api/api'
   import {Toast} from 'vant';
-  import {Icon} from 'vant';
 
   export default {
     name: 'App',
@@ -44,9 +43,7 @@
         } else if (this.newPassword !== this.confirmPassword) {
           return Toast('两次密码输入的不一致');
         } else {
-          this.$ajax({
-            method: 'post',
-            url: changePasswordUrl,
+          this.$ajax.post(changePasswordUrl, {
             headers: {
               Authorization: 'Bearer ' + this.token,
               'Content-Type': 'application/json'
@@ -57,13 +54,11 @@
               password: this.confirmPassword
             }
           }).then(res => {
-            console.log(res)
             Toast.success(res.data.message);
             setTimeout(() => {
               this.$router.push(`/login?jump=index&appKey=` + this.appKey)
             }, 1200)
           }).catch(error => {
-            console.log(error.response)
             Toast.fail(error.response.data.message);
           });
         }
@@ -71,9 +66,7 @@
     },
     created() {
       this.appKey = localStorage.getItem("appKey");
-      console.log(this.appKey)
-      this.token = getCookie('authenticationToken');
-      console.log(this.token)
+      this.token = Cookies.get('authenticationToken');
     },
     mounted() {
 

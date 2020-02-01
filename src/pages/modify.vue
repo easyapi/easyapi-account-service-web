@@ -70,13 +70,8 @@
         this.getqiniukey();
       },
       getqiniuToken() {
-        this.$ajax({
-          method: 'get',
-          url: qiniuTokenUrl,
-        }).then(res => {
-          console.log(res)
+        this.$ajax.get(qiniuTokenUrl, {}).then(res => {
           this.qnToken = res.data.upToken;
-          console.log(this.qnToken)
         }).catch(error => {
           console.error(error.response)
         });
@@ -86,21 +81,16 @@
           method: 'get',
           url: qiniuKeyUrl,
         }).then(res => {
-          console.log(res)
           this.qnKey = res.data.key;
-          console.log(this.qnKey)
         }).catch(error => {
           console.log(error.response)
         });
       },
       onRead(file) {
-        console.log(file)
         this.fileHead = file.content;
-        console.log(this.fileHead)
         var formData = new FormData();
         formData.append("avatarFile", file.file)
         formData.append("avatarFile", file.file)
-        console.log(formData.get("avatarFile"))
         // let img= 'https://qiniu.easyapi.com/' + file.file.lastModified;
         // console.log(img)
         // this.fileHead=img
@@ -121,7 +111,6 @@
             photo: this.fileHead
           }
         }).then(res => {
-          console.log(res)
           Toast.success(res.data.message);
         }).catch(error => {
           console.log(error)
@@ -139,7 +128,6 @@
             appKey: this.appKey,
           }
         }).then(res => {
-          console.log(res)
           this.personal = res.data.content
           this.fileHead = res.data.content.photo
         }).catch(error => {

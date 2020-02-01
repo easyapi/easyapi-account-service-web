@@ -87,7 +87,7 @@
               appKey: this.appKey
             }
           }).then(res => {
-            console.log(res)
+
             this.$toast("注册成功");
             this.disabled = true;
             setTimeout(() => {
@@ -113,7 +113,7 @@
           },
 //          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then((res) => {
-          console.log(res)
+
           this.$toast("获取成功");
           this.disBtn = false;
           this.showDisabled = false;

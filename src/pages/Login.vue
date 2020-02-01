@@ -44,7 +44,6 @@
         img: '',
         appKey: '',
         accessToken: '',
-//        phoneIcon:require('../assets/images/phone_icon.png')
         phoneIcon: phoneIcon,
         pwdIcon: pwdIcon,
         authenticationToken: '',
@@ -65,18 +64,7 @@
     deactivated() {
 
     },
-    //方法
     methods: {
-      //     getCookieObj(cookie) {
-      //     let v = cookie.split('; ')
-      //     console.log(v)
-      //     let _obj = {}
-      //     for (let i = 0; i < v.length; ++i) {
-      //         let k = v[i].split('=')
-      //         _obj[k[0]] = k[1]
-      //     }
-      //     return _obj
-      // },
       setCookie(token, exdays) {
         var exp = new Date();
         exp.setTime(exp.getTime() + 24 * 60 * 60 * 1000 * exdays);//保存天数
@@ -93,21 +81,6 @@
           this.getToKen()
         }
       },
-      //    getCookie(name){
-      //        console.log(name)
-      //        console.log(document.cookie)
-      //        var arrStr = document.cookie.split("; ");
-      //        console.log(arrStr)
-      //        for (var i = 0; i < arrStr.length; i++) {
-      //            var temp = arrStr[i].split("=");
-      //            if (temp[0] == name){
-      //                console.log(decodeURI(temp[1]))
-      //                this.judgeToken =decodeURI(temp[1])
-      //                return decodeURI(temp[1]);
-      //            }
-      //        }
-      // },
-
 
       //获取Token
       getToKen() {
@@ -121,7 +94,6 @@
             rememberMe: true
           }
         }).then(res => {
-          console.log(res)
           let arr = res.data.id_token.split(" ")
           this.setCookie(arr[1], 30)
           let url = res.data.login_success_url
@@ -135,11 +107,7 @@
       },
       //获取logo
       getlogo() {
-        this.$ajax({
-          method: 'get',
-          url: logourl + '?appKey=' + this.appKey,
-        }).then(res => {
-          console.log(res)
+        this.$ajax.get(logourl + '?appKey=' + this.appKey, {}).then(res => {
           this.img = res.data.content
           this.showDisabled = false;
           localStorage.setItem("logoImg", res.data.content);
@@ -148,7 +116,6 @@
         });
       },
       jumpPage(url) {
-        console.log(url)
         this.$router.push({path: url})
       }
     },
@@ -158,7 +125,6 @@
     created() {
       this.formData.mobile = localStorage.getItem("logonName");
       this.LuJin = localStorage.getItem("LuJin");
-      console.log(this.token)
       if (!this.$route.query.appKey) {
         this.appKey = localStorage.getItem("appKey");
       } else {

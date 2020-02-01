@@ -21,9 +21,7 @@
   </div>
 </template>
 <script>
-  import {getCookie} from '../util/getCookie'
   import {userInformationUrl} from '../api/api'
-  import {Icon} from 'vant';
 
   export default {
     name: 'App',
@@ -39,9 +37,7 @@
     methods: {
       //个人信息
       getPersonalData() {
-        this.$ajax({
-          method: 'get',
-          url: userInformationUrl,
+        this.$ajax.get(userInformationUrl, {
           headers: {
             Authorization: 'Bearer ' + this.token
           },
@@ -49,12 +45,8 @@
             appKey: this.appKey,
           }
         }).then(res => {
-          console.log(res)
           this.personal = res.data.content
-          console.log(this.username)
         }).catch(error => {
-          // console.log(error.response)
-
         });
       },
       pageModification() {
@@ -75,16 +67,13 @@
       }
       //获取accessToken
       this.appKey = localStorage.getItem("appKey");
-      console.log(this.appKey)
       this.token = localStorage.getItem("authenticationToken");
-      console.log(this.token)
       if (!this.token) {
         // window.location.href="https://account-service-web.easyapi.com/login?appKey="+ this.appKey
       }
     },
     mounted() {
       this.getPersonalData()
-
     }
   }
 </script>

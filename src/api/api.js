@@ -1,7 +1,4 @@
-/**
- * Created by shi on 2018/10/11.
- */
-//基本地址
+//跟地址
 export const baseURL = 'https://account-service-api.easyapi.com';
 
 export const accountBaseUrl = 'https://account.easyapi.com';
