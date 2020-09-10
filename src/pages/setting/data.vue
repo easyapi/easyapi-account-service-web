@@ -45,7 +45,7 @@
   </div>
 </template>
 <script>
-  import {userInformationUrl, qiniuKeyUrl, qiniuTokenUrl} from '../api/api'
+  import {userInformationUrl, qiniuKeyUrl, qiniuTokenUrl} from '../../api/api'
   import {Toast} from 'vant';
 
   export default {
@@ -134,7 +134,7 @@
         });
       },
       passwordModification() {
-        this.$router.push(`/changePassword`)
+        this.$router.push(`/change-password`)
       },
       //退出登录
       signOut() {

@@ -17,14 +17,14 @@
         placeholder="请输入密码"
         style="background-color: #FFFFFF!important;">
         <!--<van-icon slot="left-icon" size="16px" :name="pwdIcon"/>-->
-        <span slot="button" class="fz-cl-blue" @click="jumpPage('/forgetPassword')">忘记密码?</span>
+        <span slot="button" class="fz-cl-blue" @click="jumpPage('/forget-password')">忘记密码?</span>
       </van-field>
       <div class="btn-box">
         <button @click="submit">登录</button>
       </div>
       <div class="other">
-        <span @click="jumpPage('/register')">注册新号</span>
-        <span @click="jumpPage('/sms-login')">验证码登录</span>
+        <span @click="jumpPage('/signup')">注册新号</span>
+        <span @click="jumpPage('/captcha-login')">验证码登录</span>
       </div>
     </div>
   </div>

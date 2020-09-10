@@ -21,7 +21,7 @@
         <button @click="submit">登录</button>
       </div>
       <div class="other">
-        <span @click="jumpPage('/register')">注册新号</span>
+        <span @click="jumpPage('/signup')">注册新号</span>
         <span @click="jumpPage('/login')">密码登录</span>
       </div>
     </div>

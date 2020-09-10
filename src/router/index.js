@@ -6,12 +6,7 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  // base: '/register',
   routes: [
-    // {
-    //   path: '/',
-    //   redirect: '/loading'
-    // },
     {
       path: '/',
       name: 'index',
@@ -21,40 +16,32 @@ export default new Router({
       },
       component: resolve => require(['@/pages/index.vue'], resolve)
     },
-    // {
-    //   path: '/loading',
-    //   name: 'Loading',
-    //   meta: {
-    //     title: '正在加载'
-    //   },
-    //   component: resolve => require(['@/pages/Loading.vue'], resolve)
-    // },
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       meta: {
         keepAlive: false,
         title: '密码登录'
       },
-      component: resolve => require(['@/pages/Login.vue'], resolve)
+      component: resolve => require(['@/pages/login.vue'], resolve)
     },
     {
-      path: '/sms-login',
-      name: 'sms-login',
+      path: '/captcha-login',
+      name: 'CaptchaLogin',
       meta: {
         keepAlive: false,
         title: '验证码登录'
       },
-      component: resolve => require(['@/pages/SmsLogin.vue'], resolve)
+      component: resolve => require(['@/pages/captcha-login.vue'], resolve)
     },
     {
-      path: '/register',
-      name: 'register',
+      path: '/signup',
+      name: 'Signup',
       meta: {
         keepAlive: false,
         title: '注册'
       },
-      component: resolve => require(['@/pages/Register.vue'], resolve)
+      component: resolve => require(['@/pages/signup.vue'], resolve)
     },
     {
       path: '/modify',
@@ -63,34 +50,25 @@ export default new Router({
         keepAlive: false,
         title: '个人资料'
       },
-      component: resolve => require(['@/pages/modify.vue'], resolve)
+      component: resolve => require(['@/pages/data.vue'], resolve)
     },
     {
-      path: '/changePassword',
-      name: 'changePassword',
+      path: '/change-password',
+      name: 'ChangePassword',
       meta: {
         keepAlive: false,
         title: '修改密码'
       },
-      component: resolve => require(['@/pages/changePassword.vue'], resolve)
+      component: resolve => require(['@/pages/change-password.vue'], resolve)
     },
     {
-      path: '/forgetPassword',
-      name: 'forgetPassword',
+      path: '/forget-password',
+      name: 'ForgetPassword',
       meta: {
         keepAlive: false,
         title: '忘记密码'
       },
-      component: resolve => require(['@/pages/forgetPassword.vue'], resolve)
-    },
-    {
-      path: '/modifyNickname',
-      name: 'modifyNickname',
-      meta: {
-        keepAlive: false,
-        title: '修改昵称'
-      },
-      component: resolve => require(['@/pages/modifyNickname.vue'], resolve)
+      component: resolve => require(['@/pages/forget-password.vue'], resolve)
     }
   ]
 })
