@@ -50,7 +50,7 @@ export default new Router({
         keepAlive: false,
         title: '个人资料'
       },
-      component: resolve => require(['@/pages/data.vue'], resolve)
+      component: resolve => require(['@/pages/setting/data.vue'], resolve)
     },
     {
       path: '/change-password',

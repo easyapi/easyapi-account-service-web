@@ -35,6 +35,7 @@
   import phoneIcon from '../assets/images/phone_icon.png'
   import pwdIcon from '../assets/images/pwd_icon.png'
   import {passwordLoginUrl, logourl} from '../api/api'
+  import {login} from '../api/account'
 
   export default {
     name: '',
@@ -79,17 +80,16 @@
 
       //获取Token
       getToKen() {
-        this.$ajax.post(passwordLoginUrl, {
-          data: {
-            'appKey': this.appKey,
-            username: this.formData.mobile,
-            password: this.formData.password,
-            rememberMe: true
-          }
-        }).then(res => {
+        let data = {
+          'appKey': this.appKey,
+          username: this.formData.mobile,
+          password: this.formData.password,
+          rememberMe: true
+        }
+        login(data).then(res => {
           let arr = res.data.id_token.split(" ")
           Cookies.set('authenticationToken', arr[1], 30)
-          localStorage.setItem("authenticationToken", token);
+          localStorage.setItem("authenticationToken", arr[1]);
           let url = res.data.login_success_url
           localStorage.setItem("LuJin", url);
           localStorage.setItem("username", this.formData.mobile);

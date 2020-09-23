@@ -3,8 +3,6 @@ export const baseURL = 'https://account-service-api.easyapi.com';
 
 export const accountBaseUrl = 'https://account.easyapi.com';
 
-//密码登录
-export const passwordLoginUrl = `${baseURL}/api/account/pwd-login`;
 //验证码登录
 export const authenticationCodeLogonUrl = `${baseURL}/api/account/captcha-login`;
 //新用户注册
