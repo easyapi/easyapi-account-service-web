@@ -30,7 +30,8 @@
 <script>
   import phoneIcon from '../assets/images/phone_icon.png'
   import pwdIcon from '../assets/images/pwd_icon.png'
-  import {captchaUrl, authenticationCodeLogonUrl} from '../api/api'
+  import {authenticationCodeLogonUrl} from '../api/api'
+  import {sendCaptcha} from '../api/captcha'
 
   export default {
     name: '',
@@ -77,16 +78,11 @@
         if (!this.formData.mobile || this.formData.mobile.length !== 11) {
           return this.$toast("手机号码格式错误")
         }
-        this.$ajax.post(captchaUrl, {
-          data: {
-            'mobile': this.formData.mobile,
-            appKey: this.appKey
-          },
-        }).then((res) => {
-          this.$toast("获取成功");
+        sendCaptcha(this.appKey, this.formData.mobile).then(res => {
+          this.$toast("发送成功");
           this.disBtn = true;
-          this.showDisabled = false,
-            this.countTime();
+          this.showDisabled = false;
+          this.countTime();
         }).catch(error => {
           this.$toast("发送失败")
         });
