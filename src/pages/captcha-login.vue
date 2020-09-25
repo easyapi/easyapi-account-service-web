@@ -30,7 +30,7 @@
 <script>
   import phoneIcon from '../assets/images/phone_icon.png'
   import pwdIcon from '../assets/images/pwd_icon.png'
-  import {authenticationCodeLogonUrl} from '../api/api'
+  import {captchaLogin} from '../api/account'
   import {sendCaptcha} from '../api/captcha'
 
   export default {
@@ -102,14 +102,13 @@
       },
       //获取Token
       getToKen() {
-        this.$ajax.post(authenticationCodeLogonUrl, {
-          data: {
-            appKey: this.appKey,
-            username: this.formData.mobile,
-            code: this.formData.identifyCode,
-            rememberMe: true
-          }
-        }).then(res => {
+        let data = {
+          appKey: this.appKey,
+          username: this.formData.mobile,
+          code: this.formData.identifyCode,
+          rememberMe: true
+        };
+        captchaLogin(data).then(res => {
           let arr = res.data.id_token.split(" ")
           this.setCookie(arr[1], 30)
           let url = res.data.login_success_url

@@ -7,3 +7,11 @@ import axios from 'axios'
  * @see https://www.easyai.com
  */
 export const login = (data) => axios.post(`${baseURL}/api/account/pwd-login`, data);
+
+
+/**
+ * 验证码登录
+ *
+ * @see https://www.easyai.com
+ */
+export const captchaLogin = (data) => axios.post(`${baseURL}/api/account/captcha-login`, data);
