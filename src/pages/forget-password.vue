@@ -9,8 +9,9 @@
         center
         clearable
         placeholder="请输入验证码">
-        <span slot="button" v-if="disBtn" :disabled="disBtn" class="fz-cl-blue" @click="sendSMS">{{btnTxt}}</span>
-        <span slot="button" v-else disBtn class="fz-cl-blue">{{btnTxt}}</span>
+        <template #button>
+          <van-button size="small" :disabled="disabled " color="#00CDCD" @click="sendSMS">{{btnTxt}}</van-button>
+        </template>
       </van-field>
       <van-field type="password" v-model="formData.newPassword" class="input" placeholder="请输入6~20位，字母或者数字密码"/>
       <van-field type="password" v-model="formData.confirmPassword" class="input" placeholder="请再次输入密码"/>
@@ -21,7 +22,7 @@
   </div>
 </template>
 <script>
-  import { resetPasswordUrl } from '../api/api'
+  import {resetPasswordUrl} from '../api/api'
   import {Toast} from 'vant';
   import {sendCaptcha} from '../api/captcha'
 
@@ -29,8 +30,10 @@
     data() {
       return {
         appKey: '',
+        showSendSMS: true,
+        showCountDown: false,
         formData: {
-          mobile:"",
+          mobile: "",
           newPassword: '',
           confirmPassword: '',
           code: '',
@@ -38,6 +41,7 @@
         btnTxt: '发送验证码',
         time: 60,
         disBtn: true,
+        disabled: false
       }
     },
 
@@ -55,10 +59,10 @@
           return this.$toast("两次密码输入的不一致，请重新输入")
         } else {
           this.$ajax.post(resetPasswordUrl, {
-              username: this.formData.mobile,
-              code: this.formData.code,
-              password: this.formData.newPassword,
-              appKey: this.appKey
+            username: this.formData.mobile,
+            code: this.formData.code,
+            password: this.formData.newPassword,
+            appKey: this.appKey
           }).then(res => {
             Toast.success(res.data.message);
             setTimeout(() => {
@@ -71,13 +75,12 @@
       },
       //1.获取验证码
       sendSMS() {
-        this.disBtn = false;
         if (!this.formData.mobile || this.formData.mobile.length !== 11) {
           return this.$toast("手机号码格式错误")
         }
         sendCaptcha(this.appKey, this.formData.mobile).then(res => {
           this.$toast("发送成功");
-          this.disBtn = true;
+          this.disabled = true
           this.showDisabled = false;
           this.countTime();
         }).catch(error => {
@@ -94,7 +97,7 @@
         } else {
           this.time = 60;
           this.btnTxt = "发送验证码";
-          this.disBtn = true;
+          this.disabled = false
         }
       },
     },
