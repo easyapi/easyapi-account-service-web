@@ -3,36 +3,35 @@
     <div class="page-cell">
       <div class="page-title">修改密码</div>
       <div class="pass">
-        <van-field label="原密码" placeholder="请输入原始密码" type="password" v-model="originalPassword"></van-field>
+        <van-field label="原密码" placeholder="请输入原始密码" type="password" v-model="oldPassword"></van-field>
         <van-field label="新密码" placeholder="请输入新密码" type="password" v-model="newPassword"></van-field>
         <van-field label="确认密码" placeholder="请确认密码" type="password" v-model="confirmPassword"></van-field>
         <van-field style="display:none"></van-field>
       </div>
       <span class="tishi">请输入6~20位，字母或者数字密码</span>
       <div class="btn">
-        <van-button @click="PasswordModification">确认</van-button>
+        <van-button @click="changePassword">确认</van-button>
       </div>
     </div>
   </div>
 </template>
 <script>
-  import {changePasswordUrl} from '../api/api'
+  import {changePassword} from '../api/account'
   import {Toast} from 'vant';
 
   export default {
     name: 'App',
     data() {
       return {
-        appKey: '',
-        originalPassword: '',
+        oldPassword: '',
         newPassword: '',
         confirmPassword: '',
       };
     },
     methods: {
       //修改密码
-      PasswordModification() {
-        if (!this.originalPassword) {
+      changePassword() {
+        if (!this.oldPassword) {
           return Toast('原始密码不能为空');
         } else if (!this.newPassword) {
           return Toast('新密码不能为空');
@@ -41,31 +40,21 @@
         } else if (this.newPassword !== this.confirmPassword) {
           return Toast('两次密码输入的不一致');
         } else {
-          this.$ajax.post(changePasswordUrl, {
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            data: {
-              appKey: this.appKey,
-              oldPassword: this.originalPassword,
-              password: this.confirmPassword
-            }
-          }).then(res => {
+          let data = {
+            appKey: this.appKey,
+            oldPassword: this.oldPassword,
+            password: this.confirmPassword
+          };
+          changePassword(data).then(res => {
             Toast.success(res.data.message);
             setTimeout(() => {
-              this.$router.push(`/login?jump=index&appKey=` + this.appKey)
+              this.$router.push(`/login?jump=index&appKey=` + localStorage.getItem("appKey"))
             }, 1200)
           }).catch(error => {
             Toast.fail(error.response.data.message);
           });
         }
       },
-    },
-    created() {
-      this.appKey = localStorage.getItem("appKey");
-    },
-    mounted() {
-
     }
   }
 </script>

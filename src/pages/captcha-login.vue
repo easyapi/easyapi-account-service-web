@@ -9,12 +9,10 @@
         v-model="formData.mobile"
         type="tel"
         placeholder="请输入手机号码">
-        <!--<van-icon slot="left-icon" size="17px" :name="phoneIcon"/>-->
       </van-field>
       <van-field
         v-model="formData.identifyCode"
         placeholder="请输入验证码">
-        <!--<van-icon slot="left-icon" size="16px" :name="pwdIcon"/>-->
         <span slot="button" class="fz-cl-blue" @click="sendSMS">{{btnTxt}}</span>
       </van-field>
       <div class="btn-box">
@@ -43,7 +41,6 @@
         phoneIcon: phoneIcon,
         pwdIcon: pwdIcon,
         img: '',
-        appKey: '',
         formData: {
           mobile: null,
           identifyCode: '',
@@ -78,7 +75,7 @@
         if (!this.formData.mobile || this.formData.mobile.length !== 11) {
           return this.$toast("手机号码格式错误")
         }
-        sendCaptcha(this.appKey, this.formData.mobile).then(res => {
+        sendCaptcha(localStorage.getItem("appKey"), this.formData.mobile).then(res => {
           this.$toast("发送成功");
           this.disBtn = true;
           this.showDisabled = false;
@@ -103,17 +100,15 @@
       //获取Token
       getToKen() {
         let data = {
-          appKey: this.appKey,
+          appKey: localStorage.getItem("appKey"),
           username: this.formData.mobile,
           code: this.formData.identifyCode,
           rememberMe: true
         };
         captchaLogin(data).then(res => {
-          let arr = res.data.id_token.split(" ")
-          this.setCookie(arr[1], 30)
-          let url = res.data.login_success_url
-          localStorage.setItem("LuJin", url);
-          window.location.href = 'https://account-service-web.easyapi.com/?appKey=' + this.appKey
+          Cookies.set('authenticationToken', res.data.id_token)
+          localStorage.setItem("invoiceUrl", res.data.login_success_url);
+          this.$router.push(`/?appKey=` + localStorage.getItem("appKey"))
         }).catch(error => {
           console.log(error)
         });
@@ -123,7 +118,6 @@
       }
     },
     created() {
-      this.appKey = localStorage.getItem("appKey");
       this.img = localStorage.getItem("logoImg");
     },
     mounted() {

@@ -19,7 +19,9 @@
   </div>
 </template>
 <script>
-  import {userInformationUrl, qiniuKeyUrl, qiniuTokenUrl} from '../../api/api'
+  import {getAccount, updateAccount} from '../../api/account'
+  import {getQiniuKey, getQiniuToken} from '../../api/qiniu'
+
   import {Toast} from 'vant';
 
   export default {
@@ -27,7 +29,6 @@
     data() {
       return {
         token: '',
-        appKey: '',
         personal: '',
         fileHead: '',
         qnToken: '',
@@ -40,21 +41,18 @@
         this.$router.push('/modifyNickname')
       },
       getTokenAandKey() {
-        this.getqiniuToken();
-        this.getqiniukey();
+        this.getQiniuToken();
+        this.getQiniuKey();
       },
-      getqiniuToken() {
-        this.$ajax.get(qiniuTokenUrl, {}).then(res => {
+      getQiniuToken() {
+        getQiniuToken().then(res => {
           this.qnToken = res.data.upToken;
         }).catch(error => {
           console.error(error.response)
         });
       },
-      getqiniukey() {
-        this.$ajax({
-          method: 'get',
-          url: qiniuKeyUrl,
-        }).then(res => {
+      getQiniuKey() {
+        getQiniuKey().then(res => {
           this.qnKey = res.data.key;
         }).catch(error => {
           console.log(error.response)
@@ -71,19 +69,12 @@
         // this.modifyingHead()
       },
 
-      modifyingHead() {
-        this.$ajax({
-          method: 'put',
-          url: userInformationUrl,
-          headers: {
-            Authorization: 'Bearer ' + this.token,
-            'Content-Type': 'application/json',
-          },
-          data: {
-            appKey: this.appKey,
-            photo: this.fileHead
-          }
-        }).then(res => {
+      updateAccount() {
+        let data = {
+          appKey: localStorage.getItem("appKey"),
+          photo: this.fileHead
+        };
+        updateAccount(data).then(res => {
           Toast.success(res.data.message);
         }).catch(error => {
           console.log(error)
@@ -91,16 +82,7 @@
       },
       //个人信息
       getPersonalData() {
-        this.$ajax({
-          method: 'get',
-          url: userInformationUrl,
-          headers: {
-            Authorization: 'Bearer ' + this.token
-          },
-          params: {
-            appKey: this.appKey,
-          }
-        }).then(res => {
+        getAccount().then(res => {
           this.personal = res.data.content
           this.fileHead = res.data.content.photo
         }).catch(error => {
@@ -119,11 +101,10 @@
         window.document.cookie = "authenticationToken" + "=" + "" + ";path=/;expires=-1";
         window.document.cookie = "accessToken" + "=" + "" + ";path=/;expires=-1";
         Toast.success('退出成功');
-        this.$router.push(`/login?appKey=` + this.appKey)
+        this.$router.push(`/login?appKey=` + localStorage.getItem("appKey"))
       }
     },
     created() {
-      this.appKey = localStorage.getItem("appKey");
       this.token = localStorage.getItem("authenticationToken");
     },
     mounted() {

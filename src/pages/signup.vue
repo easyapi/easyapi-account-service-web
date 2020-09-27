@@ -31,7 +31,8 @@
   </div>
 </template>
 <script>
-  import {captchaUrl, registerUrl} from '../api/api'
+  import {signup} from '../api/account'
+  import {sendCaptcha} from '../api/captcha'
 
   export default {
     name: '',
@@ -72,15 +73,14 @@
         } else if (!this.formData.code) {
           return this.$toast("请输入验证码")
         } else {
-          this.$ajax.post(registerUrl, {
-            data: {
-              code: this.formData.code,
-              username: this.formData.mobile,
-              password: this.formData.password,
-              nickname: this.formData.name,
-              appKey: this.appKey
-            }
-          }).then(res => {
+          let data = {
+            code: this.formData.code,
+            username: this.formData.mobile,
+            password: this.formData.password,
+            nickname: this.formData.name,
+            appKey: this.appKey
+          };
+          signup(data).then(res => {
             this.$toast("注册成功");
             this.disabled = true;
             setTimeout(() => {
@@ -97,18 +97,13 @@
         if (!this.formData.mobile || this.formData.mobile.length !== 11) {
           return this.$toast("手机号码格式错误")
         }
-        this.$ajax.post(captchaUrl, {
-          data: {
-            'mobile': this.formData.mobile,
-            appKey: this.appKey
-          },
-        }).then((res) => {
-          this.$toast("获取成功");
+        sendCaptcha(this.appKey, this.formData.mobile).then((res) => {
+          this.$toast(res.data.message);
           this.disBtn = false;
           this.showDisabled = false;
           this.countTime();
         }).catch(error => {
-          this.$toast("发送失败")
+          this.$toast(error.data.message)
         });
       },
       //2.倒计时
@@ -128,20 +123,10 @@
         this.$router.push({path: url,})
       }
     },
-    mounted() {
-//      this.getOpenId();
-    },
-    activated() {
-    },
-    deactivated() {
-    },
     created() {
       this.appKey = localStorage.getItem("appKey");
       this.img = localStorage.getItem("logoImg");
-    },
-    //计算属性
-    computed: {},
-    watch: {}
+    }
   }
 </script>
 <style scoped lang="stylus">

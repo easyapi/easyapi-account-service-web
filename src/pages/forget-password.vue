@@ -22,9 +22,9 @@
   </div>
 </template>
 <script>
-  import {resetPasswordUrl} from '../api/api'
-  import {Toast} from 'vant';
+  import {forgetPassword} from '../api/account'
   import {sendCaptcha} from '../api/captcha'
+  import {Toast} from 'vant';
 
   export default {
     data() {
@@ -58,12 +58,13 @@
         } else if (this.formData.confirmPassword !== this.formData.newPassword) {
           return this.$toast("两次密码输入的不一致，请重新输入")
         } else {
-          this.$ajax.post(resetPasswordUrl, {
+          let data = {
             username: this.formData.mobile,
             code: this.formData.code,
             password: this.formData.newPassword,
             appKey: this.appKey
-          }).then(res => {
+          };
+          forgetPassword(data).then(res => {
             Toast.success(res.data.message);
             setTimeout(() => {
               this.$router.push('/login?appKey=' + this.appKey)

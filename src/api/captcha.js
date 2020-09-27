@@ -1,4 +1,5 @@
-export const baseUrl = 'https://account-service-api.easyapi.com';
+import {baseUrl} from "./api";
+
 import axios from 'axios'
 
 /**

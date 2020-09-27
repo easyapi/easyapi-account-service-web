@@ -4,10 +4,10 @@
       <div class="page-title">我的</div>
       <div class="personalInformation" @click="pageModification">
         <div class="information">
-          <div class="img"><img :src="personal.photo" alt=""></div>
+          <div class="img"><img :src="user.photo" alt=""></div>
           <div class="survey">
-            <span style="color: #333;font-size:18px">昵称:{{personal.nickname}}</span>
-            <span style="color: #999">{{personal.username}}</span>
+            <span style="color: #333;font-size:18px">昵称：{{user.nickname}}</span>
+            <span style="color: #999">{{user.username}}</span>
           </div>
           <div class="plo">
             <van-icon name="arrow" style="font-size: 18px; color:#999;"/>
@@ -21,28 +21,21 @@
   </div>
 </template>
 <script>
-  import {userInformationUrl} from '../api/api'
+  import {getAccount} from '../api/account'
 
   export default {
     name: 'App',
     data() {
       return {
         token: '',
-        appKey: '',
-        personal: '',
-        LuJin: '',
+        user: '',
         username: '',
       };
     },
     methods: {
-      //个人信息
-      getPersonalData() {
-        this.$ajax.get(userInformationUrl, {
-          params: {
-            appKey: this.appKey,
-          }
-        }).then(res => {
-          this.personal = res.data.content
+      getAccount() {
+        getAccount().then(res => {
+          this.user = res.data.content
         }).catch(error => {
         });
       },
@@ -51,26 +44,16 @@
       },
       //跳转开发票
       drawBill() {
-        window.location.href = this.LuJin
+        window.location.href = localStorage.getItem("invoiceUrl")
       },
     },
     created() {
-      this.LuJin = localStorage.getItem("LuJin");
-      if (!this.$route.query.appKey) {
-        this.appKey = localStorage.getItem("appKey");
-      } else {
-        this.appKey = this.$route.query.appKey;
-        localStorage.setItem("appKey", this.appKey);
-      }
-      //获取accessToken
-      this.appKey = localStorage.getItem("appKey");
-      this.token = localStorage.getItem("authenticationToken");
-      if (!this.token) {
-        // window.location.href="https://account-service-web.easyapi.com/login?appKey="+ this.appKey
+      if (this.$route.query.appKey) {
+        localStorage.setItem("appKey", this.$route.query.appKey);
       }
     },
     mounted() {
-      this.getPersonalData()
+      this.getAccount()
     }
   }
 </script>

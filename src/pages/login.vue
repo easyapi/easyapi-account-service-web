@@ -6,7 +6,7 @@
     </div>
     <div class="form-content">
       <van-field
-        v-model="formData.mobile"
+        v-model="formData.username"
         type="tel"
         placeholder="请输入手机号码">
         <!--<van-icon slot="left-icon" size="17px" :name="phoneIcon"/>-->
@@ -34,8 +34,8 @@
   import Cookies from 'js-cookie'
   import phoneIcon from '../assets/images/phone_icon.png'
   import pwdIcon from '../assets/images/pwd_icon.png'
-  import {passwordLoginUrl, logourl} from '../api/api'
   import {login} from '../api/account'
+  import {getLogo} from '../api/setting'
 
   export default {
     name: '',
@@ -51,24 +51,15 @@
         pwdIcon: pwdIcon,
         username: '',
         formData: {
-          mobile: null,
+          username: '',
           password: '',
           judgeToken: '',
-          LuJin: '',
         },
       }
     },
-    //keep-alive 组件激活时调用
-    activated() {
-
-    },
-    //keep-alive 组件停用时调用。
-    deactivated() {
-
-    },
     methods: {
       submit() {
-        if (!this.formData.mobile || this.formData.mobile.length !== 11) {
+        if (!this.formData.username || this.formData.username.length !== 11) {
           return this.$toast("手机号格式错误")
         }
         if (!this.formData.password) {
@@ -81,27 +72,23 @@
       //获取Token
       getToKen() {
         let data = {
-          'appKey': this.appKey,
-          username: this.formData.mobile,
+          'appKey': localStorage.getItem("appKey"),
+          username: this.formData.username,
           password: this.formData.password,
           rememberMe: true
         }
         login(data).then(res => {
-          let arr = res.data.id_token.split(" ")
-          Cookies.set('authenticationToken', arr[1], 30)
-          localStorage.setItem("authenticationToken", arr[1]);
-          let url = res.data.login_success_url
-          localStorage.setItem("LuJin", url);
-          localStorage.setItem("username", this.formData.mobile);
-          window.location.href = 'https://account-service-web.easyapi.com/?appKey=' + this.appKey
+          Cookies.set('authenticationToken', res.data.id_token)
+          localStorage.setItem("invoiceUrl", res.data.login_success_url);
+          localStorage.setItem("username", this.formData.username);
+          this.$router.push(`/?appKey=` + localStorage.getItem("appKey"))
         }).catch(error => {
           console.log(error)
           this.$toast("请检查账号，密码");
         });
       },
-      //获取logo
-      getlogo() {
-        this.$ajax.get(logourl + '?appKey=' + this.appKey, {}).then(res => {
+      getLogo() {
+        getLogo().then(res => {
           this.img = res.data.content
           this.showDisabled = false;
           localStorage.setItem("logoImg", res.data.content);
@@ -114,24 +101,14 @@
       }
     },
     mounted() {
-      this.getlogo()
+      this.getLogo()
     },
     created() {
-      this.formData.mobile = localStorage.getItem("username");
-      this.LuJin = localStorage.getItem("LuJin");
-      if (!this.$route.query.appKey) {
-        this.appKey = localStorage.getItem("appKey");
-      } else {
-        this.appKey = this.$route.query.appKey;
-        localStorage.setItem("appKey", this.appKey);
+      this.formData.username = localStorage.getItem("username");
+      if (this.$route.query.appKey) {
+        localStorage.setItem("appKey", this.$route.query.appKey);
       }
-      this.token = localStorage.getItem("authenticationToken");
-      if (this.token) {
-        // window.location.href='https://account-service-web.easyapi.com/?appKey='+ this.appKey
-      }
-    },
-    computed: {},
-    watch: {}
+    }
   }
 </script>
 <style scoped lang="stylus">
