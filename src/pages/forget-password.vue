@@ -21,15 +21,16 @@
   </div>
 </template>
 <script>
-  import {captchaUrl, resetPasswordUrl} from '../api/api'
+  import { resetPasswordUrl } from '../api/api'
   import {Toast} from 'vant';
+  import {sendCaptcha} from '../api/captcha'
 
   export default {
     data() {
       return {
         appKey: '',
         formData: {
-          mobile: null,
+          mobile:"",
           newPassword: '',
           confirmPassword: '',
           code: '',
@@ -54,12 +55,10 @@
           return this.$toast("两次密码输入的不一致，请重新输入")
         } else {
           this.$ajax.post(resetPasswordUrl, {
-            data: {
               username: this.formData.mobile,
               code: this.formData.code,
               password: this.formData.newPassword,
               appKey: this.appKey
-            }
           }).then(res => {
             Toast.success(res.data.message);
             setTimeout(() => {
@@ -76,14 +75,10 @@
         if (!this.formData.mobile || this.formData.mobile.length !== 11) {
           return this.$toast("手机号码格式错误")
         }
-        this.$ajax.post(captchaUrl, {
-          data: {
-            'mobile': this.formData.mobile,
-            appKey: this.appKey
-          },
-        }).then((res) => {
-          this.$toast("获取成功");
-          this.disBtn = false;
+        sendCaptcha(this.appKey, this.formData.mobile).then(res => {
+          this.$toast("发送成功");
+          this.disBtn = true;
+          this.showDisabled = false;
           this.countTime();
         }).catch(error => {
           this.$toast("发送失败")

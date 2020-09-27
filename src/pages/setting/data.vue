@@ -2,42 +2,16 @@
   <div class="body">
     <div class="page-cell">
       <div class="page-title">个人资料</div>
-      <ul class="ul">
-        <li class="xinxi">
-          <span>头像</span>
-          <van-uploader :after-read="onRead"
-                        ref="upload"
-                        @click.native="getTokenAandKey"
-                        accept="['jpg','jpeg','png']"
-                        action="https://upload.qiniup.com/"
-                        :data="{key:qnKey,token:qnToken}">
-            <img :src="fileHead" alt="">
-            <van-icon name="arrow" style="font-size: 18px;margin-top:17px"/>
-          </van-uploader>
-
-          <!--<span style="display: flex">-->
-          <!--<img :src="personal.photo" alt="">-->
-          <!--<span>-->
-          <!---->
-          <!--</span>-->
-          <!--</span>-->
-        </li>
-        <li class="xinxi">
-          <span>昵称</span>
-          <span style="display: flex" @click="nameModification">
-              <span>{{personal.nickname}}</span>
-             <van-icon name="arrow" style="font-size: 18px;margin-top:17px"/>
-          </span>
-        </li>
-        <li class="xinxi">
-          <span>手机号</span>
-          <span>{{personal.username}}</span>
-        </li>
-        <li class="xinxi" @click="passwordModification()">
-          <span>修改密码</span>
-          <span>   <van-icon name="arrow" style="font-size: 18px;margin-top:17px"/> </span>
-        </li>
-      </ul>
+      <van-cell-group>
+        <van-cell title="头像" is-link>
+          <template slot="default">
+            <img src="https://img.yzcdn.cn/vant/cat.jpeg" style="width: 3.6rem;">
+          </template>
+        </van-cell>
+        <van-cell title="昵称" is-link @click="nameModification" v-model="personal.nickname"></van-cell>
+        <van-cell title="手机号" v-model="personal.username"></van-cell>
+        <van-cell title="修改密码" is-link @click="passwordModification()"></van-cell>
+      </van-cell-group>
       <div class="btn">
         <van-button @click="signOut">退出登录</van-button>
       </div>
@@ -219,5 +193,9 @@
     background-color: #52c9f5;
     box-shadow: 0px 3px 15px 0px rgba(12, 143, 192, 0.23);
     font-size: 15px;
+  }
+
+  .personal_headPortrait {
+    float: right;
   }
 </style>
