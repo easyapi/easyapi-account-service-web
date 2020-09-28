@@ -3,15 +3,47 @@
     <div class="page-cell">
       <div class="page-title">个人资料</div>
       <van-cell-group>
-        <van-cell title="头像" is-link>
+        <van-cell title="头像" is-link @click.stop="uploadHeadImg">
           <template slot="default">
-            <img src="https://img.yzcdn.cn/vant/cat.jpeg" style="width: 3.6rem;">
+            <div class="xinxi">
+              <van-uploader :after-read="onRead"
+                            ref="upload"
+                            @click.native="getTokenAandKey"
+                            accept="['jpg','jpeg','png']"
+                            action="https://upload.qiniup.com/"
+                            :data="{key:qnKey,token:qnToken}">
+                <img :src="fileHead" alt="">
+              </van-uploader>
+            </div>
           </template>
         </van-cell>
-        <van-cell title="昵称" is-link @click="nameModification" v-model="personal.nickname"></van-cell>
+        <van-cell title="昵称" is-link @click="isEditNameShow =true" :value="user.name"></van-cell>
         <van-cell title="手机号" v-model="personal.username"></van-cell>
         <van-cell title="修改密码" is-link @click="passwordModification()"></van-cell>
       </van-cell-group>
+      <van-popup v-model="isEditNameShow" position="bottom">
+        <van-nav-bar
+          title="编辑昵称"
+          left-text="取消"
+          right-text="确定"
+          @click-left="isEditNameShow=false"
+          @click-right="onUpdateName"
+        />
+        <div>
+          <!-- field组件有一个value事件，该事件接收一个参数：输入框的值
+               在模板中$event表示事件参数，Vue本身提供的 -->
+          <van-field
+            :value="user.name"
+            @input="inputName = $event"
+            rows="2"
+            autosize
+            type="textarea"
+            maxlength="20"
+            placeholder="请输入昵称"
+            show-word-limit
+          />
+        </div>
+      </van-popup>
       <div class="btn">
         <van-button @click="signOut">退出登录</van-button>
       </div>
@@ -28,6 +60,14 @@
     name: 'App',
     data() {
       return {
+        userInfo: {
+          avatar: ""
+        },
+        user: {
+          name: ""
+        },
+        isEditNameShow: false,
+        inputName: '',
         token: '',
         personal: '',
         fileHead: '',
@@ -38,7 +78,13 @@
     methods: {
       //修改昵称
       nameModification() {
-        this.$router.push('/modifyNickname')
+        // this.$router.push('/modifyNickname')
+      },
+      onUpdateName() {
+        // 1.请求提交表单
+        // 2.根据结构执行
+        this.user.name = this.inputName
+        this.isEditNameShow = false
       },
       getTokenAandKey() {
         this.getQiniuToken();
@@ -63,10 +109,6 @@
         var formData = new FormData();
         formData.append("avatarFile", file.file)
         formData.append("avatarFile", file.file)
-        // let img= 'https://qiniu.easyapi.com/' + file.file.lastModified;
-        // this.fileHead=img
-        //  file.webkitRelativePath = img;
-        // this.modifyingHead()
       },
 
       updateAccount() {
@@ -109,7 +151,7 @@
     },
     mounted() {
       this.getPersonalData()
-
+      this.user.name = this.personal.nickname
     }
   }
 </script>
@@ -130,17 +172,12 @@
   }
 
   .xinxi {
-    padding: 0px 10px;
-    height: 50px;
-    line-height: 50px;
+    height: auto;
     background-color: #fff;
-    border-top: 1px solid #ddd;
     display: flex;
-    justify-content: space-between;
-  }
-
-  .xinxi:last-child {
-    border-bottom: 1px solid #ddd;
+    position: relative;
+    top: 0px;
+    right: -115px;
   }
 
   .xinxi span:first-child {
@@ -178,5 +215,9 @@
 
   .personal_headPortrait {
     float: right;
+  }
+
+  .hiddenInput {
+    display: none;
   }
 </style>
