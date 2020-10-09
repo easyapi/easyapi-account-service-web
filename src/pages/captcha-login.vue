@@ -26,6 +26,7 @@
   </div>
 </template>
 <script>
+  import Cookies from 'js-cookie'
   import phoneIcon from '../assets/images/phone_icon.png'
   import pwdIcon from '../assets/images/pwd_icon.png'
   import {captchaLogin} from '../api/account'
